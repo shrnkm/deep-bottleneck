@@ -21,7 +21,7 @@ def construct_full_dataset(training, test):
     X = np.concatenate((training.X, test.X))
     y = np.concatenate((training.y, test.y))
     Y = np.concatenate((training.Y, test.Y))
-    return Dataset(X, Y, y, training.nb_classes)
+    return Dataset(X, Y, y, training.n_classes)
 
 
 def shuffle_in_unison_inplace(a, b):

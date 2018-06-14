@@ -41,7 +41,8 @@ class InformationPlanePlotter(BasePlotter):
 
         ax.set(xlabel='I(X;M)', ylabel='I(Y;M)')
 
-        if self.dataset == 'datasets.mnist' or self.dataset == 'datasets.fashion_mnist':
+        if self.dataset == 'datasets.mnist' or self.dataset == 'datasets.fashion_mnist'\
+                or self.dataset == 'datasets.mnist_random_labels':
             ax.set(xlim=[0, 14], ylim=[0, 3.5])
         else:
             ax.set(xlim=[0, 12], ylim=[0, 1])

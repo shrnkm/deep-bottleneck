@@ -53,7 +53,7 @@ class MutualInformationEstimator:
             y = full.y
             Y = full.Y
 
-        for i in range(self.training_data.nb_classes):
+        for i in range(self.training_data.n_classes):
             saved_labelixs[i] = y == i
 
         labelprobs = np.mean(Y, axis=0)
@@ -100,7 +100,7 @@ class MutualInformationEstimator:
 
                     # Compute conditional entropies of layer activity given output
                     hM_given_Y_upper = 0.
-                    for i in range(self.training_data.nb_classes):
+                    for i in range(self.training_data.n_classes):
                         hcond_upper = entropy_func_upper([activity[saved_labelixs[i], :], ])[0]
                         hM_given_Y_upper += labelprobs[i] * hcond_upper
 
@@ -120,7 +120,7 @@ class MutualInformationEstimator:
 
                     hM_given_Y_lower = 0.
 
-                    for i in range(self.training_data.nb_classes):
+                    for i in range(self.training_data.n_classes):
                         hcond_lower = entropy_func_lower([activity[saved_labelixs[i], :], ])[0]
                         hM_given_Y_lower += labelprobs[i] * hcond_lower
 

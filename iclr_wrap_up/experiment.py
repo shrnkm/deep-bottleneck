@@ -24,18 +24,21 @@ ex.observers.append(MongoObserver.create(url=url,
 @ex.config
 def hyperparameters():
     epochs = 5
-    batch_size = 256
-    architecture = [10, 7, 5, 4, 3]
-    learning_rate = 0.0004
+    #batch_size = 256
+    batch_size = 128
+    #architecture = [10, 7, 5, 4, 3]
+    architecture = [256, 128, 64, 32, 16]
+    #learning_rate = 0.0004
+    learning_rate = 0.001
     full_mi = False
     infoplane_measure = 'upper'
     architecture_name = '-'.join(map(str, architecture))
     activation_fn = 'tanh'
     save_dir = 'rawdata/' + activation_fn + '_' + architecture_name
     model = 'models.feedforward'
-    dataset = 'datasets.harmonics'
+    dataset = 'datasets.mnist_random_labels'
     estimator = 'compute_mi.compute_mi_ib_net'
-    callbacks = [('callbacks.earlystopping_manual', []), ]
+    callbacks = []
     plotters = [('plotter.informationplane', [infoplane_measure, epochs]),
                ('plotter.snr', [architecture])]
     n_runs = 1
@@ -116,7 +119,7 @@ def conduct(epochs, batch_size, n_runs, _run):
 
     measures_all_runs = []
     for run_id in range(n_runs):
-        model = load_model(input_size=training.X.shape[1], output_size=training.nb_classes)
+        model = load_model(input_size=training.X.shape[1], output_size=training.n_classes)
         callbacks = make_callbacks(training=training, test=test)
         model.fit(x=training.X, y=training.Y,
                   verbose=2,
@@ -126,6 +129,7 @@ def conduct(epochs, batch_size, n_runs, _run):
                   callbacks=callbacks)
 
         print('fit successful')
+        print(model.summary())
 
         # Getting the current activations_summary from the logging_callback.
         activations_summary = callbacks[0].activations_summary
