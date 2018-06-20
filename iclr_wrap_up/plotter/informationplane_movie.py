@@ -32,12 +32,14 @@ class InformationPlaneMoviePlotter(BasePlotter):
 
         plt.set_cmap("hsv")
         fig, ax = plt.subplots()
-        if self.dataset == 'datasets.mnist' or self.dataset == 'datasets.fashion_mnist':
+        if self.dataset == 'datasets.mnist' or self.dataset == 'datasets.fashion_mnist'\
+                or self.dataset == 'datasets.mnist_random_labels':
             ax.set(xlim=[0, 14], ylim=[0, 3.5])
         else:
             ax.set(xlim=[0, 12], ylim=[0, 1])
 
         scatter = ax.scatter([], [], s=20, edgecolor='none')
+        ax.set(xlabel='I(X;M)', ylabel='I(Y;M)')
 
         num_layers = measures.index.get_level_values(1).nunique()
         layers_colors = np.linspace(0, 1, num_layers)
@@ -60,4 +62,3 @@ class InformationPlaneMoviePlotter(BasePlotter):
 
                 writer.grab_frame()
 
-        ax.set(xlabel='I(X;M)', ylabel='I(Y;M)')

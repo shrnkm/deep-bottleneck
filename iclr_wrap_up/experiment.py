@@ -23,26 +23,27 @@ ex.observers.append(MongoObserver.create(url=url,
 
 @ex.config
 def hyperparameters():
-    epochs = 5
-    #batch_size = 256
-    batch_size = 128
-    #architecture = [10, 7, 5, 4, 3]
-    architecture = [256, 128, 64, 32, 16]
-    #learning_rate = 0.0004
-    learning_rate = 0.001
+    epochs = 10000
+    batch_size = 256
+    #batch_size = 128
+    architecture = [10, 7, 5, 4, 3]
+    #architecture = [256, 128, 64, 32, 16]
+    learning_rate = 0.0004
+    #learning_rate = 0.001
     full_mi = False
     infoplane_measure = 'upper'
     architecture_name = '-'.join(map(str, architecture))
     activation_fn = 'tanh'
     save_dir = 'rawdata/' + activation_fn + '_' + architecture_name
     model = 'models.feedforward'
-    dataset = 'datasets.mnist_random_labels'
+    #dataset = 'datasets.mnist_random_labels'
+    dataset = 'datasets.harmonics_random_labels'
     estimator = 'compute_mi.compute_mi_ib_net'
     callbacks = []
     plotters = [('plotter.informationplane', [epochs]),
                ('plotter.snr', [architecture]),
                ('plotter.informationplane_movie', [])]
-    n_runs = 5
+    n_runs = 1
 
 
 @ex.capture
@@ -59,9 +60,11 @@ def load_model(model, architecture, activation_fn, learning_rate, input_size, ou
 
 def do_report(epoch):
     # Only log activity for some epochs.  Mainly this is to make things run faster.
-    if epoch < 20:  # Log for all first 20 epochs
+    if epoch < 50:  # Log for all first 50 epochs
         return True
-    elif epoch < 100:  # Then for every 5th epoch
+    elif epoch < 100:  # Then for every 2nd epoch
+        return (epoch % 2) == 0
+    elif epoch < 300:  # Then for every 5nd epoch
         return (epoch % 5) == 0
     elif epoch < 2000:  # Then every 20th
         return (epoch % 20) == 0
