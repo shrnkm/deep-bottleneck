@@ -16,7 +16,7 @@ matplotlib.use('agg')
 
 import iclr_wrap_up.credentials as credentials
 
-ex = Experiment('sacred_keras_example')
+ex = Experiment('KdeEstimator-NoiseVariance:1e-1')
 
 ex.observers.append(MongoObserver.create(url=credentials.MONGODB_URI,
                                          db_name=credentials.MONGODB_DBNAME))
@@ -24,24 +24,24 @@ ex.observers.append(MongoObserver.create(url=credentials.MONGODB_URI,
 
 @ex.config
 def hyperparameters():
-    epochs = 15
+    epochs = 10000
     batch_size = 256
-    architecture = [4, 3]
+    architecture = [10,8,6,4,3]
     learning_rate = 0.0004
     full_mi = True
-    infoplane_measure = 'lower'
+    infoplane_measure = 'upper'
     architecture_name = '-'.join(map(str, architecture))
     activation_fn = 'tanh'
     save_dir = 'rawdata/' + activation_fn + '_' + architecture_name
     model = 'models.feedforward'
     dataset = 'datasets.harmonics'
-    estimator = 'mi_estimator.lower'
+    estimator = 'mi_estimator.upper'
     callbacks = []
     plotters = [('plotter.informationplane', [epochs]),
                ('plotter.snr', [architecture]),
                ('plotter.informationplane_movie', [])
                 ]
-    n_runs = 1
+    n_runs = 25
 
 
 
